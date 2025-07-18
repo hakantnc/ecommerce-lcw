@@ -54,4 +54,9 @@ namespace Entities.Exceptions
         {
         }
     }
+    public sealed class OrderNotFound : NotFound
+    {
+        public OrderNotFound(int id) : base($"The order with id:{id} could not found.")
+        { }
+    }
 }

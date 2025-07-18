@@ -23,6 +23,8 @@ namespace Repositories.EFCore
         public DbSet<PaymentMethods> PaymentMethods { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<Cart> Carts { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderDetails> OrderDetails { get; set; }
 
         override protected void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -33,6 +35,8 @@ namespace Repositories.EFCore
             modelBuilder.ApplyConfiguration(new PaymentMethodConfig());
             modelBuilder.ApplyConfiguration(new CartItemConfig());
             modelBuilder.ApplyConfiguration(new CartConfig());
+            modelBuilder.ApplyConfiguration(new OrderConfig());
+            modelBuilder.ApplyConfiguration(new OrderDetailsConfig());
         }
     }
 }

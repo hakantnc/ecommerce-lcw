@@ -17,6 +17,9 @@ namespace Repositories.Contracts
         IPaymentRepository PaymentService { get; } 
         ICartRepository CartService { get; }
         ICartItemRepository CartItemService { get; }
+
+        IOrderRepository OrderService { get; }
+        IOrderDetailsRepository OrderDetailsService { get; }
         void Save();
     }
 }

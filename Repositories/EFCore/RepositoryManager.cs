@@ -17,6 +17,8 @@ namespace Repositories.EFCore
         private readonly Lazy<IPaymentRepository> _paymentRepository;
         private readonly Lazy<ICartRepository> _cartRepository;
         private readonly Lazy<ICartItemRepository> _cartItemRepository;
+        private readonly Lazy<IOrderRepository> _orderRepository;
+        private readonly Lazy<IOrderDetailsRepository> _orderDetailsRepository;
         public RepositoryManager(AppDbContext context)
         {
             _context = context;
@@ -27,6 +29,8 @@ namespace Repositories.EFCore
             _paymentRepository = new Lazy<IPaymentRepository>(() => new PaymentRepository(_context));
             _cartRepository = new Lazy<ICartRepository>(() => new CartRepository(_context));
             _cartItemRepository = new Lazy<ICartItemRepository>(() => new CartItemRepository(_context));
+            _orderDetailsRepository = new Lazy<IOrderDetailsRepository>(() => new OrderDetailsRepository(_context));
+            _orderRepository = new Lazy<IOrderRepository>(() => new OrderRepository(_context));
         }
         public IProductRepository ProductService => _productRepository.Value;
 
@@ -37,6 +41,8 @@ namespace Repositories.EFCore
         public ICartRepository CartService => _cartRepository.Value;
         public ICartItemRepository CartItemService => _cartItemRepository.Value;
 
+        public IOrderRepository OrderService => _orderRepository.Value;
+        public IOrderDetailsRepository OrderDetailsService => _orderDetailsRepository.Value;
         public void Save()
         {
             _context.SaveChanges();
