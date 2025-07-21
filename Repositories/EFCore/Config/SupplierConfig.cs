@@ -29,6 +29,10 @@ namespace Repositories.EFCore.Config
             builder.Property(s => s.supplier_country)
                 .HasMaxLength(100);
 
+            builder.Property(s => s.supplier_password)
+               .HasMaxLength(255)
+               .IsRequired();
+
             builder.Property(s => s.supplier_email)    
                 .HasMaxLength(100)
                 .IsRequired();
@@ -48,7 +52,8 @@ namespace Repositories.EFCore.Config
                supplier_phone = "+1-555-0123",
                supplier_address = "123 Technology Drive",
                supplier_city = "San Francisco",
-               supplier_country = "USA"
+               supplier_country = "USA",
+               supplier_password = "securepassword123"
            },
            new Supplier
            {
@@ -58,7 +63,8 @@ namespace Repositories.EFCore.Config
                supplier_phone = "+44-20-7946-0958",
                supplier_address = "456 Innovation Street",
                supplier_city = "London",
-               supplier_country = "UK"
+               supplier_country = "UK",
+               supplier_password = "anothersupplierpassword456"
            }
        );
         }

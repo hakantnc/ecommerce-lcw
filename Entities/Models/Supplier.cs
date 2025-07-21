@@ -9,6 +9,7 @@ namespace Entities.Models
     public class Supplier
     {
         public int supplier_id { get; set; }
+        public string? supplier_password { get; set; }
         public string supplier_name { get; set; } = string.Empty;
         public string supplier_email { get; set; } = string.Empty;
         public string? supplier_phone { get; set; }

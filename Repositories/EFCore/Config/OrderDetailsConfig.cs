@@ -34,12 +34,7 @@ namespace Repositories.EFCore.Config
                 .HasForeignKey(od => od.order_id)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // OrderDetails - Product relationship (Many-to-One)
-            builder.HasOne(od => od.Product)
-                .WithMany()
-                .HasForeignKey("product_id")
-                .OnDelete(DeleteBehavior.Restrict);
-
+          
             builder.HasData(
                 new OrderDetails
                 {

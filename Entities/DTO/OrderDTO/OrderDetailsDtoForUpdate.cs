@@ -12,6 +12,7 @@ namespace Entities.DTO.OrderDTO
         public int OrderId { get; set; }
         public decimal totalAmount { get; set; }
         public bool isPaid { get; set; }
+        public int productId { get; set; }
         public string? status { get; set; }
     }
 }

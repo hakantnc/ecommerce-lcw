@@ -23,9 +23,9 @@ C:\Users\HAKAN\workspace\Repositories\obj\Debug\net8.0\Repositories.GeneratedMSB
 C:\Users\HAKAN\workspace\Repositories\obj\Debug\net8.0\Repositories.AssemblyInfoInputs.cache
 C:\Users\HAKAN\workspace\Repositories\obj\Debug\net8.0\Repositories.AssemblyInfo.cs
 C:\Users\HAKAN\workspace\Repositories\obj\Debug\net8.0\Repositories.csproj.CoreCompileInputs.cache
+C:\Users\HAKAN\workspace\Repositories\obj\Debug\net8.0\Repositories.sourcelink.json
 C:\Users\HAKAN\workspace\Repositories\obj\Debug\net8.0\Reposito.787EC4B2.Up2Date
 C:\Users\HAKAN\workspace\Repositories\obj\Debug\net8.0\Repositories.dll
 C:\Users\HAKAN\workspace\Repositories\obj\Debug\net8.0\refint\Repositories.dll
 C:\Users\HAKAN\workspace\Repositories\obj\Debug\net8.0\Repositories.pdb
 C:\Users\HAKAN\workspace\Repositories\obj\Debug\net8.0\ref\Repositories.dll
-C:\Users\HAKAN\workspace\Repositories\obj\Debug\net8.0\Repositories.sourcelink.json

@@ -27,14 +27,13 @@ namespace Repositories.EFCore
 
         }
 
-        public IQueryable<OrderDetails> GetAllOrderDetails(bool trackChanges) => FindAll(trackChanges);
+        public IQueryable<OrderDetails> GetAllOrderDetails(bool trackChanges) => FindAll(trackChanges).Include(od => od.Order);
          
         public OrderDetails GetOneOrderDetailsById(int orderDetails_id, bool trackChanges) => FindByCondition(od => od.orderDetails_id == orderDetails_id, trackChanges)
             .SingleOrDefault() ?? throw new OrderNotFound(orderDetails_id);
 
         public IQueryable<OrderDetails> GetOrderDetailsByOrderId(int order_id, bool trackChanges) => FindByCondition(od => od.order_id == order_id, trackChanges)
-            .Include(od => od.Order)
-            .Include(od => od.Product);
+            .Include(od => od.Order);
 
         public void UpdateOneOrderDetails(int orderDetails_id, OrderDetails orderDetails, bool trackChanges)
         {

@@ -16,9 +16,9 @@ namespace Presentation.Controllers
     public class OrderDetailsController : ControllerBase
     {
         private readonly IOrderDetailsService _manager;
-        private readonly ILogger _logger;
+        private readonly ILoggerService _logger;
 
-        public OrderDetailsController(IOrderDetailsService manager, ILogger logger)
+        public OrderDetailsController(IOrderDetailsService manager, ILoggerService logger)
         {
             _manager = manager;
             _logger = logger;
@@ -27,7 +27,7 @@ namespace Presentation.Controllers
         public IActionResult GetAllOrderDetails(bool trackChanges = false)
         {
             var orderDetails = _manager.GetAllOrderDetails(trackChanges);
-            _logger.LogInformation("Fetching all order details");
+            _logger.LogInfo("Fetching all order details");
             return Ok(orderDetails);
         }
 
@@ -40,7 +40,7 @@ namespace Presentation.Controllers
                 _logger.LogError($"Order details with id: {orderDetails_id} doesn't exist in the database.");
                 return NotFound();
             }
-            _logger.LogInformation($"Fetching order details with ID: {orderDetails_id}");
+            _logger.LogInfo($"Fetching order details with ID: {orderDetails_id}");
             return Ok(orderDetails);
         }
 
@@ -48,7 +48,7 @@ namespace Presentation.Controllers
         public IActionResult GetOrderDetailsByOrderId(int order_id, bool trackChanges = false)
         {
             var orderDetails = _manager.GetOrderDetailsByOrderId(order_id, trackChanges);
-            _logger.LogInformation($"Fetching order details for order with ID: {order_id}");
+            _logger.LogInfo($"Fetching order details for order with ID: {order_id}");
             return Ok(orderDetails);
         }
 
@@ -61,7 +61,7 @@ namespace Presentation.Controllers
                 return BadRequest("Order details object is null");
             }
             _manager.CreateOneOrderDetails(orderDetails);
-            _logger.LogInformation("Creating new order details");
+            _logger.LogInfo("Creating new order details");
             return CreatedAtAction(nameof(GetOneOrderDetailsById), new { orderDetails_id = orderDetails.orderDetails_id }, orderDetails);
         }
 
@@ -80,7 +80,7 @@ namespace Presentation.Controllers
                 return NotFound();
             }
             _manager.UpdateOneOrderDetails(orderDetails_id, orderDetailsDto, true);
-            _logger.LogInformation($"Updating order details with ID: {orderDetails_id}");
+            _logger.LogInfo($"Updating order details with ID: {orderDetails_id}");
             return NoContent();
         }
 
@@ -94,7 +94,7 @@ namespace Presentation.Controllers
                 return NotFound();
             }
             _manager.DeleteOneOrderDetails(orderDetails_id, orderDetails);
-            _logger.LogInformation($"Deleting order details with ID: {orderDetails_id}");
+            _logger.LogInfo($"Deleting order details with ID: {orderDetails_id}");
             return NoContent();
         }
     }
