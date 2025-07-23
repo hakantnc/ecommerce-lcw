@@ -13,6 +13,8 @@ namespace Repositories.EFCore.Config
     {
         public void Configure(EntityTypeBuilder<Product> builder)
         {
+
+
             builder.HasKey(p => p.Id);
             builder.Property(p => p.Name)
                 .IsRequired()
@@ -27,7 +29,8 @@ namespace Repositories.EFCore.Config
 
             builder.HasOne(p => p.Category)
                    .WithMany(c => c.Products)
-                   .HasForeignKey(p => p.category_id);
+                   .HasForeignKey(p => p.category_id)
+                   .OnDelete(DeleteBehavior.SetNull);
 
             builder.Property(p=>p.supplier_id)
                 .IsRequired();
@@ -77,6 +80,7 @@ namespace Repositories.EFCore.Config
                      category_id = 1
 
                  }
+                 
             );
         }
     }

@@ -14,5 +14,6 @@ namespace Repositories.Contracts
       void CreateOneProduct(Product product);
       void UpdateOneProduct(int id, Product product, bool trackChanges);
       void DeleteOneProduct(int id, Product product);
+      
     }
 }

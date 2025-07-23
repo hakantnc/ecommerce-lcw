@@ -1,6 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\lcmarket",
+    "\\lcmarket\\src",
+    "\\lcmarket\\src\\app"
   ],
+  "SelectedNode": "\\lcmarket\\src\\app\\page.tsx",
   "PreviewInSolutionExplorer": false
 }

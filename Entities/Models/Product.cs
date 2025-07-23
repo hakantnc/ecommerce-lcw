@@ -16,7 +16,7 @@ namespace Entities.Models
         public string? ImageUrl { get; set; }
         public bool IsActive { get; set; }
 
-        public int category_id { get; set; } // Foreign key to Category - REQUIRED
+        public int? category_id { get; set; } // Foreign key to Category - REQUIRED
         public int supplier_id { get; set; } // Foreign key to Supplier
        
         public Category? Category { get; set; } // Navigation property - nullable yapıldı
