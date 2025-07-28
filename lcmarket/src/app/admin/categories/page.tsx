@@ -5,19 +5,24 @@
 
 import { useEffect, useState } from 'react';
 import { categoryAPI } from '@/lib/api';
-
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { subcategoryAPI } from '@/lib/api';
 // Kategori tipi tanımı
 interface Category {
   id: number;
   name: string;
   description?: string;
 }
+// Subcategory tipi tanımı
+interface Subcategory {
+  id: number;
+  name: string;
+  categoryId: number;
+}
 
 export default function CategoriesPage() {
   // State'ler
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
@@ -25,25 +30,21 @@ export default function CategoriesPage() {
     description: ''
   });
 
-  // Sayfa yüklendiğinde kategorileri getir
-  useEffect(() => {
-    fetchCategories();
-  }, []);
+  const queryClient = useQueryClient()
 
-  // Kategorileri API'den çeken fonksiyon
-  const fetchCategories = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const data = await categoryAPI.getAll();
-      setCategories(data || []);
-    } catch (err) {
-      console.error('Kategoriler yüklenirken hata:', err);
-      setError('Kategoriler yüklenirken bir hata oluştu. API bağlantısını kontrol edin.');
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { data: categories = [], isLoading, isError } = useQuery({
+    queryKey: ['categories'],
+    queryFn: categoryAPI.getAll,
+  })
+  const [error, setError] = useState<string | null>(null);
+  // Alt Kategori yönetimi için state'ler
+  const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
+  const [subForm, setSubForm] = useState({
+    name: '',
+    categoryId: ''
+  });
+  const [subError, setSubError] = useState<string | null>(null);
+  const [subLoading, setSubLoading] = useState(false);
 
   // Form gönderme fonksiyonu
   const handleSubmit = async (e: React.FormEvent) => {
@@ -69,7 +70,7 @@ export default function CategoriesPage() {
       setFormData({ name: '', description: '' });
       setEditingCategory(null);
       setShowForm(false);
-      await fetchCategories();
+      queryClient.invalidateQueries({ queryKey: ['categories'] });
     } catch (err) {
       console.error('İşlem sırasında hata:', err);
       setError('İşlem gerçekleştirilemedi. Lütfen tekrar deneyin.');
@@ -96,7 +97,7 @@ export default function CategoriesPage() {
     try {
       setError(null);
       await categoryAPI.delete(id);
-      await fetchCategories();
+      queryClient.invalidateQueries({ queryKey: ['categories'] });
     } catch (err) {
       console.error('Silme sırasında hata:', err);
       setError('Kategori silinemedi. Lütfen tekrar deneyin.');
@@ -109,6 +110,54 @@ export default function CategoriesPage() {
     setEditingCategory(null);
     setShowForm(false);
     setError(null);
+  };
+
+  // Alt kategorileri getir
+  const fetchSubcategories = async () => {
+    setSubLoading(true);
+    try {
+      // Tüm kategoriler için alt kategorileri getir
+      const all = await Promise.all(categories.map(cat => subcategoryAPI.getByCategory(cat.id)));
+      setSubcategories(all.flat());
+    } catch (e) {
+      setSubcategories([]);
+    } finally {
+      setSubLoading(false);
+    }
+  };
+  useEffect(() => {
+    if (categories.length > 0) fetchSubcategories();
+  }, [categories]);
+
+  // Alt kategori ekle
+  const handleSubSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!subForm.name.trim() || !subForm.categoryId) {
+      setSubError('Alt kategori adı ve kategori seçimi zorunludur.');
+      return;
+    }
+    setSubError(null);
+    try {
+      await fetch('/api/subcategory', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sub_name: subForm.name, category_id: Number(subForm.categoryId) })
+      });
+      setSubForm({ name: '', categoryId: '' });
+      fetchSubcategories();
+    } catch (e) {
+      setSubError('Alt kategori eklenemedi.');
+    }
+  };
+  // Alt kategori sil
+  const handleSubDelete = async (id: number) => {
+    if (!confirm('Bu alt kategoriyi silmek istediğinizden emin misiniz?')) return;
+    try {
+      await fetch(`/api/subcategory/${id}`, { method: 'DELETE' });
+      fetchSubcategories();
+    } catch (e) {
+      setSubError('Alt kategori silinemedi.');
+    }
   };
 
   return (
@@ -206,7 +255,7 @@ export default function CategoriesPage() {
             Kategoriler ({categories.length})
           </h3>
           
-          {loading ? (
+          {isLoading ? (
             <div className="text-center py-8">
               <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
               <p className="mt-2 text-gray-600">Kategoriler yükleniyor...</p>
@@ -276,6 +325,61 @@ export default function CategoriesPage() {
               </table>
             </div>
           )}
+        </div>
+      </div>
+      {/* Alt Kategori Yönetimi */}
+      <div className="mt-12">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">Alt Kategori Yönetimi</h2>
+        <form onSubmit={handleSubSubmit} className="flex flex-col md:flex-row gap-4 mb-6">
+          <input
+            type="text"
+            value={subForm.name}
+            onChange={e => setSubForm(f => ({ ...f, name: e.target.value }))}
+            placeholder="Alt kategori adı"
+            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            required
+          />
+          <select
+            value={subForm.categoryId}
+            onChange={e => setSubForm(f => ({ ...f, categoryId: e.target.value }))}
+            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            required
+          >
+            <option value="">Kategori Seçiniz</option>
+            {categories.map(cat => (
+              <option key={cat.id} value={cat.id}>{cat.name}</option>
+            ))}
+          </select>
+          <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium">Ekle</button>
+        </form>
+        {subError && <div className="mb-4 text-red-600">{subError}</div>}
+        <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+          <table className="min-w-full divide-y divide-gray-300">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Alt Kategori Adı</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kategori</th>
+                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">İşlemler</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {subLoading ? (
+                <tr><td colSpan={4} className="text-center py-4">Yükleniyor...</td></tr>
+              ) : subcategories.length === 0 ? (
+                <tr><td colSpan={4} className="text-center py-4">Alt kategori bulunamadı.</td></tr>
+              ) : subcategories.map(sub => (
+                <tr key={sub.id} className="hover:bg-gray-50">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">#{sub.id}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{sub.name}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{categories.find(c => c.id === sub.categoryId)?.name || '-'}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <button onClick={() => handleSubDelete(sub.id)} className="text-red-600 hover:text-red-900">Sil</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

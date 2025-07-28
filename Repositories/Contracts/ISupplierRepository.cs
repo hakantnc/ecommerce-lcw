@@ -15,5 +15,6 @@ namespace Repositories.Contracts
         void DeleteOneSupplier(int supplier_id, Supplier supplier);
 
         IQueryable<Product> GetProductsBySupplierId(int supplier_id, bool trackChanges);
+        Supplier? GetByEmail(string email);
     }
 }

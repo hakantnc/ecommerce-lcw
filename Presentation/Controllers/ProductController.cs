@@ -47,7 +47,8 @@ namespace Presentation.Controllers
                     category_id = p.category_id,
                     category_name = p.Category?.category_name,
                     supplier_id = p.supplier_id,
-                    supplier_name = p.Supplier?.supplier_name ?? p.supplier_name
+                    supplier_name = p.Supplier?.supplier_name ?? p.supplier_name,
+                    sub_id = p.sub_id,
                 });
     
                 return Ok(response);
@@ -76,7 +77,8 @@ namespace Presentation.Controllers
                     category_id = product.category_id,
                     category_name = product.Category?.category_name,
                     supplier_id = product.supplier_id,
-                    supplier_name = product.Supplier?.supplier_name ?? product.supplier_name
+                    supplier_name = product.Supplier?.supplier_name ?? product.supplier_name,
+                    sub_id = product.sub_id,
                 };
     
                 return Ok(response);

@@ -20,6 +20,7 @@ namespace Repositories.Contracts
 
         IOrderRepository OrderService { get; }
         IOrderDetailsRepository OrderDetailsService { get; }
+        ISubcategoryRepository SubcategoryService { get; } // Ensure ISubcategoryRepository is public
         void Save();
     }
 }

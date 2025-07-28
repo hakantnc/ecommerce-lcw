@@ -15,8 +15,7 @@ namespace Repositories.EFCore.Config
         {
             builder.HasKey(c => c.Id);
 
-            builder.Property(c => c.customer_id)
-                .IsRequired();
+  
 
             builder.Property(c => c.IsActive)
                 .IsRequired();

@@ -12,5 +12,7 @@ namespace Entities.Models
         public string? category_name { get; set; }
         public string? category_description { get; set; }
         public ICollection<Product>? Products { get; set; }
+        public ICollection<Subcategory> Subcategories { get; set; } = new List<Subcategory>();
+
     }
 }

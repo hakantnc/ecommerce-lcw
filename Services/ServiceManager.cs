@@ -20,6 +20,7 @@ namespace Services
         private readonly Lazy<ICartItemService> _cartItemService;   
         private readonly Lazy<IOrderDetailsService> _orderDetailsService;   
         private readonly Lazy<IOrderService> _orderService;
+        private readonly Lazy<ISubcategoryService> _subcategoryService;
         public ServiceManager(IRepositoryManager repositoryManager)
         {
             _repositoryManager = repositoryManager;
@@ -32,6 +33,7 @@ namespace Services
            _cartItemService = new Lazy<ICartItemService>(() => new CartItemManager(repositoryManager)); 
             _orderService = new Lazy<IOrderService>(() => new OrderManager(repositoryManager));
             _orderDetailsService = new Lazy<IOrderDetailsService>(() => new OrderDetailsManager(repositoryManager));
+            _subcategoryService = new Lazy<ISubcategoryService>(() => new SubcategoryManager(repositoryManager));
         }
         public IProductService Product => _productService.Value;
         public ISupplierService Supplier => _supplierService.Value;
@@ -42,6 +44,7 @@ namespace Services
         public ICartItemService CartItem => _cartItemService.Value;
         public IOrderService Order => _orderService.Value;
         public IOrderDetailsService OrderDetails => _orderDetailsService.Value;
+        public ISubcategoryService Subcategory => _subcategoryService.Value;
         public void Save()
         {
             _repositoryManager.Save();

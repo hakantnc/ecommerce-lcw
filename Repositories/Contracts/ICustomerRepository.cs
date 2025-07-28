@@ -14,5 +14,6 @@ namespace Repositories.Contracts
         void CreateOneCustomer(Customer customer);
         void UpdateOneCustomer(int customer_id, Customer customer, bool trackChanges);
         void DeleteOneCustomer(int customer_id, Customer customer);
+        Customer? GetByEmail(string email);
     }
 }

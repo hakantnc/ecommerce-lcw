@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Providers from "./provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,6 +31,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {/* Ana Header - Tüm sayfalarda görünecek */}
+        <Providers>
         <Header />
         
         {/* Kategoriler Navbar - Header'ın altında */}
@@ -42,6 +44,7 @@ export default function RootLayout({
         
         {/* Footer - Sayfanın altında */}
         <Footer />
+        </Providers>
       </body>
     </html>
   );

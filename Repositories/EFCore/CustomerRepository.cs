@@ -46,5 +46,7 @@ namespace Repositories.EFCore
             Update(entity);
 
         }
+        public Customer? GetByEmail(string email)
+        => _context.Set<Customer>().FirstOrDefault(c => c.Email == email);
     }
 }

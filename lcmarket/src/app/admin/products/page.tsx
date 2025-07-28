@@ -4,7 +4,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { productAPI, categoryAPI } from '@/lib/api';
+import { productAPI, categoryAPI, subcategoryAPI } from '@/lib/api';
 
 // Ürün tipi tanımı
 interface Product {
@@ -15,6 +15,7 @@ interface Product {
   stock: number;
   imageUrl?: string;
   categoryId?: number;
+  subcategoryId?: number;
   isActive: boolean;
   supplierId?: number;
 }
@@ -26,6 +27,13 @@ interface Category {
   description?: string;
 }
 
+// Subcategory tipi tanımı
+interface Subcategory {
+  id: number;
+  name: string;
+  categoryId: number;
+}
+
 export default function ProductsPage() {
   // State'ler
   const [products, setProducts] = useState<Product[]>([]);
@@ -34,6 +42,7 @@ export default function ProductsPage() {
   const [error, setError] = useState<string | null>(null);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [showForm, setShowForm] = useState(false);
+  const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -41,6 +50,7 @@ export default function ProductsPage() {
     stock: '',
     imageUrl: '',
     categoryId: '',
+    subcategoryId: '',
     isActive: true,
     supplierId: ''
   });
@@ -50,6 +60,16 @@ export default function ProductsPage() {
     fetchProducts();
     fetchCategories();
   }, []);
+
+  // Kategori değişince subcategoryleri getir
+  useEffect(() => {
+    if (formData.categoryId) {
+      subcategoryAPI.getByCategory(Number(formData.categoryId)).then(setSubcategories);
+    } else {
+      setSubcategories([]);
+    }
+    setFormData(prev => ({ ...prev, subcategoryId: '' }));
+  }, [formData.categoryId]);
 
   // Ürünleri API'den çeken fonksiyon
   const fetchProducts = async () => {
@@ -110,6 +130,7 @@ export default function ProductsPage() {
         stock: parseInt(formData.stock),
         imageUrl: formData.imageUrl.trim(),
         categoryId: formData.categoryId && formData.categoryId !== '' ? parseInt(formData.categoryId) : null,
+        subcategoryId: formData.subcategoryId && formData.subcategoryId !== '' ? parseInt(formData.subcategoryId) : null,
         isActive: formData.isActive,
         supplierId: formData.supplierId && formData.supplierId !== '' ? parseInt(formData.supplierId) : null
       };
@@ -133,6 +154,7 @@ export default function ProductsPage() {
         stock: '',
         imageUrl: '',
         categoryId: '',
+        subcategoryId: '',
         isActive: true,
         supplierId: ''
       });
@@ -155,6 +177,7 @@ export default function ProductsPage() {
       stock: product.stock?.toString() || '',
       imageUrl: product.imageUrl || '',
       categoryId: product.categoryId?.toString() || '',
+      subcategoryId: product.subcategoryId?.toString() || '',
       isActive: product.isActive !== false,
       supplierId: product.supplierId?.toString() || ''
     });
@@ -187,6 +210,7 @@ export default function ProductsPage() {
       stock: '',
       imageUrl: '',
       categoryId: '',
+      subcategoryId: '',
       isActive: true,
       supplierId: ''
     });
@@ -282,6 +306,24 @@ export default function ProductsPage() {
                     <option key={category.id} value={category.id}>
                       {category.name}
                     </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Subcategory */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Alt Kategori
+                </label>
+                <select
+                  value={formData.subcategoryId}
+                  onChange={(e) => setFormData(prev => ({ ...prev, subcategoryId: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  disabled={!formData.categoryId || subcategories.length === 0}
+                >
+                  <option value="">Alt Kategori Seçiniz</option>
+                  {subcategories.map(sub => (
+                    <option key={sub.id} value={sub.id}>{sub.name}</option>
                   ))}
                 </select>
               </div>

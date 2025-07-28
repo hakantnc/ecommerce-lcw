@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "5DCuxrasH4s=",
+  "dgSpecHash": "iIiOj8B/5Rs=",
   "success": true,
   "projectFilePath": "C:\\Users\\HAKAN\\workspace\\Entities\\Entities.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\HAKAN\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512"
+  ],
   "logs": []
 }

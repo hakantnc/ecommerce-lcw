@@ -25,6 +25,7 @@ namespace Repositories.EFCore
         public DbSet<Cart> Carts { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetails> OrderDetails { get; set; }
+        public DbSet<Subcategory> Subcategories { get; set; }
 
         override protected void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -37,6 +38,7 @@ namespace Repositories.EFCore
             modelBuilder.ApplyConfiguration(new CartConfig());
             modelBuilder.ApplyConfiguration(new OrderConfig());
             modelBuilder.ApplyConfiguration(new OrderDetailsConfig());
+            modelBuilder.ApplyConfiguration(new SubcategoryConfig());
         }
     }
 }

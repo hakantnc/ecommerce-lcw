@@ -17,6 +17,9 @@ namespace Services.Contracts
         public IPaymentService Payment { get; }
         public IOrderService Order { get; }
         public IOrderDetailsService OrderDetails { get; }
+        public ICartService Cart { get; }
+        public ICartItemService CartItem { get; }
+        public ISubcategoryService Subcategory { get; }
 
         void Save();
     }

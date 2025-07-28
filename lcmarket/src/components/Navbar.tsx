@@ -1,9 +1,10 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
+import { useState} from 'react'
 import { categoryAPI } from '@/lib/api'
+import { useQuery } from '@tanstack/react-query'
+import { useEffect } from 'react'
 
 // Kategori tipi
 interface Category {
@@ -14,13 +15,7 @@ interface Category {
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-
-  // ✅ TanStack Query ile kategorileri çekiyoruz
-  const {
-    data: categories = [],
-    isLoading,
-    isError
-  } = useQuery({
+  const { data: categories, isLoading, isError } = useQuery({
     queryKey: ['categories'],
     queryFn: categoryAPI.getAll
   })
@@ -34,7 +29,7 @@ export default function Navbar() {
         {/* Desktop navbar */}
         <div className="hidden md:flex items-center justify-between h-12">
           <div className="flex items-center space-x-1 overflow-hidden">
-            {categories.length > 0 && (
+            {categories && categories.length > 0 && (
               <div className="flex items-center space-x-1 overflow-hidden">
                 {categories.map((category) => (
                   <Link
@@ -82,7 +77,7 @@ export default function Navbar() {
                   <div className="px-3 py-2">Yükleniyor...</div>
                 ) : isError ? (
                   <div className="px-3 py-2 text-sm text-red-500">Hata oluştu</div>
-                ) : categories.map((category) => (
+                ) : categories && categories.length > 0 && categories. map((category) => (
                   <Link
                     key={category.id}
                     href={`/kategori/${category.id}`}

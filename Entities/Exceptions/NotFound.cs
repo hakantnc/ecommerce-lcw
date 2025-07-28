@@ -19,7 +19,7 @@ namespace Entities.Exceptions
         {
 
         }
-       
+
 
     }
     public sealed class SupplierNotFound : NotFound
@@ -36,7 +36,7 @@ namespace Entities.Exceptions
         }
     }
 
-    public sealed class  CustomerNotFound : NotFound
+    public sealed class CustomerNotFound : NotFound
     {
         public CustomerNotFound(int id) : base($"The customer with id:{id} could not found.")
         {
@@ -48,7 +48,7 @@ namespace Entities.Exceptions
         {
         }
     }
-    public sealed class CartNotFound: NotFound
+    public sealed class CartNotFound : NotFound
     {
         public CartNotFound(int id) : base($"The cart with id:{id} could not found.")
         {
@@ -58,5 +58,11 @@ namespace Entities.Exceptions
     {
         public OrderNotFound(int id) : base($"The order with id:{id} could not found.")
         { }
+    }
+    public sealed class SubcategoryNotFound : NotFound
+    {
+        public SubcategoryNotFound(int id) : base($"The subcategory with id:{id} could not found.")
+        {
+        }
     }
 }
