@@ -21,10 +21,13 @@ namespace Services
         private readonly Lazy<IOrderDetailsService> _orderDetailsService;   
         private readonly Lazy<IOrderService> _orderService;
         private readonly Lazy<ISubcategoryService> _subcategoryService;
-        public ServiceManager(IRepositoryManager repositoryManager)
+        private readonly IProductRepository _productRepository;
+        public ServiceManager(IRepositoryManager repositoryManager, IProductRepository productRepository)
         {
+            
             _repositoryManager = repositoryManager;
-            _productService = new Lazy<IProductService>(() => new ProductManager(repositoryManager));  
+            _productRepository = productRepository;
+            _productService = new Lazy<IProductService>(() => new ProductManager(repositoryManager, productRepository));  
             _supplierService = new Lazy<ISupplierService>(() => new SupplierManager(repositoryManager)) ;
             _categoryService = new Lazy<ICategoryService>(() => new CategoryManager(repositoryManager));
             _customerService = new Lazy<ICustomerService>(() => new CustomerManager(repositoryManager));

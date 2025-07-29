@@ -1,6 +1,7 @@
 ﻿using Entities.DTO.ProductDTO;
 using Entities.Models;
 using Repositories.Contracts;
+using Repositories.EFCore;
 using Services.Contracts;
 using System;
 using System.Collections.Generic;
@@ -13,12 +14,17 @@ namespace Services
     public class ProductManager : IProductService
     {
         private readonly IRepositoryManager _manager;
-
-        public ProductManager(IRepositoryManager manager)
+        private readonly IProductRepository _productRepository;
+        public ProductManager(IRepositoryManager manager, IProductRepository productRepository)
         {
             _manager = manager;
+            _productRepository = productRepository;
         }
 
+        public async Task<IEnumerable<Product>> SearchProductsAsync(string query)
+        {
+            return await _productRepository.SearchAsync(query);
+        }
         public Product CreateOneProduct(Product product)
         {
             // supplier_id'ye göre supplier_name'i otomatik doldur

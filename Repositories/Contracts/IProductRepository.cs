@@ -9,6 +9,7 @@ namespace Repositories.Contracts
 {
     public interface IProductRepository : IRepositoryBase<Product>
     {
+        Task<IEnumerable<Product>> SearchAsync(string query);
       IQueryable<Product> GetAllProducts(bool trackChanges);
       public Product GetOneProductsById(int id, bool trackChanges);
       void CreateOneProduct(Product product);

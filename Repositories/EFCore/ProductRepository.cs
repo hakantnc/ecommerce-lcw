@@ -1,6 +1,6 @@
 ﻿using Entities.Models;
 using Repositories.Contracts;
-using Microsoft.EntityFrameworkCore;  // ✅ Include için gerekli
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +14,15 @@ namespace Repositories.EFCore
         public ProductRepository(AppDbContext context) : base(context)
         {
 
+        }
+        public async Task<IEnumerable<Product>> SearchAsync(string query)
+        {
+            if (string.IsNullOrEmpty(query))
+                throw new ArgumentException("Query cannot be null or empty", nameof(query));
+
+            return await _context.Products
+                .Where(p => p.Name != null && p.Name.Contains(query))
+                .ToListAsync();
         }
 
         public void CreateOneProduct(Product product) => Create(product);

@@ -25,21 +25,29 @@ namespace Services
         {
             var claims = new[]
             {
-                new Claim(ClaimTypes.Email, email),
-                new Claim(ClaimTypes.Role, role)
+        new Claim(ClaimTypes.Email, email),
+        new Claim(ClaimTypes.Role, role)
+    };
 
-            };
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JwtSettings:Key"]));
+            var keyString = _config["JwtSettings:Key"] ?? throw new InvalidOperationException("JWT Key is not configured.");
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(keyString));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var issuer = _config["JwtSettings:Issuer"] ?? throw new InvalidOperationException("JWT Issuer is not configured.");
+            var audience = _config["JwtSettings:Audience"] ?? throw new InvalidOperationException("JWT Audience is not configured.");
+            var expiresStr = _config["JwtSettings:Expires"] ?? throw new InvalidOperationException("JWT Expires is not configured.");
+            var expires = double.Parse(expiresStr);
+
             var token = new JwtSecurityToken(
-           issuer: _config["JwtSettings:Issuer"],
-           audience: _config["JwtSettings:Audience"],
-           claims: claims,
-           expires: DateTime.UtcNow.AddMinutes(double.Parse(_config["JwtSettings:Expires"])),
-           signingCredentials: creds);
+                issuer: issuer,
+                audience: audience,
+                claims: claims,
+                expires: DateTime.UtcNow.AddMinutes(expires),
+                signingCredentials: creds
+            );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
-
         }
+
     }
 }

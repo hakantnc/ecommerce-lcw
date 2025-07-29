@@ -116,17 +116,18 @@ export default function CategoriesPage() {
   const fetchSubcategories = async () => {
     setSubLoading(true);
     try {
-      // Tüm kategoriler için alt kategorileri getir
-      const all = await Promise.all(categories.map(cat => subcategoryAPI.getByCategory(cat.id)));
-      setSubcategories(all.flat());
+      const allSubcategories = await subcategoryAPI.getAll();
+      setSubcategories(allSubcategories);
     } catch (e) {
+      console.error('Alt kategoriler yüklenirken hata:', e);
       setSubcategories([]);
     } finally {
       setSubLoading(false);
     }
   };
+
   useEffect(() => {
-    if (categories.length > 0) fetchSubcategories();
+    fetchSubcategories();
   }, [categories]);
 
   // Alt kategori ekle
@@ -138,24 +139,26 @@ export default function CategoriesPage() {
     }
     setSubError(null);
     try {
-      await fetch('/api/subcategory', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sub_name: subForm.name, category_id: Number(subForm.categoryId) })
+      await subcategoryAPI.create({
+        name: subForm.name,
+        categoryId: Number(subForm.categoryId)
       });
       setSubForm({ name: '', categoryId: '' });
       fetchSubcategories();
     } catch (e) {
+      console.error('Alt kategori eklenirken hata:', e);
       setSubError('Alt kategori eklenemedi.');
     }
   };
+
   // Alt kategori sil
   const handleSubDelete = async (id: number) => {
     if (!confirm('Bu alt kategoriyi silmek istediğinizden emin misiniz?')) return;
     try {
-      await fetch(`/api/subcategory/${id}`, { method: 'DELETE' });
+      await subcategoryAPI.delete(id);
       fetchSubcategories();
     } catch (e) {
+      console.error('Alt kategori silinirken hata:', e);
       setSubError('Alt kategori silinemedi.');
     }
   };

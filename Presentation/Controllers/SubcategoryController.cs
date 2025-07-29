@@ -59,7 +59,7 @@ namespace Presentation.Controllers
             }
             _manager.Subcategory.Create(subcategory);
             _manager.Save();
-            return CreatedAtAction(nameof(GetSubcategoryById), new { subcategory_id = subcategory.sub_id }, subcategory);
+            return CreatedAtAction(nameof(GetSubcategoryById), new { subcategory_id = subcategory.SubcategoryId }, subcategory);
         }
         [HttpPut("{id}")]
         public IActionResult UpdateSubCategory(int id, [FromBody] Subcategory subCategory)
@@ -71,7 +71,7 @@ namespace Presentation.Controllers
             if (existingSubCategory == null)
                 throw new SubcategoryNotFound(id);
 
-            existingSubCategory.sub_name = subCategory.sub_name;
+            existingSubCategory.SubcategoryName = subCategory.SubcategoryName;
             existingSubCategory.category_id = subCategory.category_id;
 
             _manager.Subcategory.UpdateSubCategory(existingSubCategory);

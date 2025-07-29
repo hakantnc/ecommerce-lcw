@@ -39,8 +39,9 @@ namespace Repositories.EFCore.Config
 
             builder.HasOne(p => p.Subcategory)
                  .WithMany(sc => sc.Products)
-                .HasForeignKey(p => p.sub_id)
+                .HasForeignKey(p => p.SubcategoryId)
                  .OnDelete(DeleteBehavior.SetNull);
+            builder.Property(p => p.SubcategoryName);
 
 
             builder.HasData(
@@ -56,7 +57,8 @@ namespace Repositories.EFCore.Config
                     supplier_id = 1,
                     supplier_name = "ABC Electronics",
                     category_id = 1,
-                    sub_id = 1
+                    SubcategoryId = 1,
+                    SubcategoryName = "Smartphones"
 
                 },
                  new Product
@@ -71,7 +73,8 @@ namespace Repositories.EFCore.Config
                      supplier_id = 2,
                      supplier_name = "XYZ Components",
                      category_id = 2,
-                     sub_id = 2
+                     SubcategoryId = 2,
+                     SubcategoryName = "Laptops"
 
                  },
                  new Product
@@ -86,10 +89,11 @@ namespace Repositories.EFCore.Config
                      supplier_id = 2,
                      supplier_name = "XYZ Components",
                      category_id = 1,
-                     sub_id = 1
+                     SubcategoryId = 1,
+                     SubcategoryName = "Smartphones"
 
                  }
-                 
+
             );
         }
     }

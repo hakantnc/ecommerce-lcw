@@ -11,6 +11,7 @@ namespace Services.Contracts
 {
     public interface IProductService
     {
+        Task<IEnumerable<Product>> SearchProductsAsync(string query);
         IEnumerable<Entities.Models.Product> GetAllProducts(bool trackChanges);
         Product GetOneProductsById(int id, bool trackChanges);
         Product CreateOneProduct(Product product);

@@ -20,12 +20,15 @@ namespace Presentation.Controllers
         {
             private readonly IServiceManager _manager;
             private readonly ILoggerService _logger;
+            private readonly IProductService _productService;
 
-        public ProductController(IServiceManager manager, ILoggerService logger)
+
+        public ProductController(IServiceManager manager, ILoggerService logger, IProductService productService)
             {
                 _manager = manager;
                 _logger = logger;
-            }
+                _productService = productService;
+        }
 
             // GET: api/products ALL PRODUCTS
 
@@ -48,7 +51,7 @@ namespace Presentation.Controllers
                     category_name = p.Category?.category_name,
                     supplier_id = p.supplier_id,
                     supplier_name = p.Supplier?.supplier_name ?? p.supplier_name,
-                    sub_id = p.sub_id,
+                    SubcategoryId = p.SubcategoryId,
                 });
     
                 return Ok(response);
@@ -64,7 +67,6 @@ namespace Presentation.Controllers
                    throw new ProductNotFound(id);
                 }
     
-                // ✅ Detay response
                 var response = new
                 {
                     id = product.Id,
@@ -78,14 +80,22 @@ namespace Presentation.Controllers
                     category_name = product.Category?.category_name,
                     supplier_id = product.supplier_id,
                     supplier_name = product.Supplier?.supplier_name ?? product.supplier_name,
-                    sub_id = product.sub_id,
+                    SubcategoryName = product.Subcategory?.SubcategoryName,
                 };
     
                 return Ok(response);
 }
+        [HttpGet("search")]
+        public async Task<IActionResult> Search([FromQuery] string query)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+                return BadRequest("Query boş olamaz.");
 
-            // POST: api/products/ CREATE PRODUCT
-            [HttpPost]
+            var results = await _productService.SearchProductsAsync(query);
+            return Ok(results);
+        }
+
+        [HttpPost]
             public IActionResult CreateOneProduct([FromBody] Product product)
             {
             _logger.LogInfo("Creating a new product");

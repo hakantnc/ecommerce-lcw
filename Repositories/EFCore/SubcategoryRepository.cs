@@ -22,7 +22,7 @@ namespace Repositories.EFCore
             FindAll(trackChanges).ToList();
 
         public Subcategory? GetSubCategoryById(int id, bool trackChanges) =>
-        FindByCondition(sc => sc.sub_id == id, trackChanges).SingleOrDefault();
+        FindByCondition(sc => sc.SubcategoryId == id, trackChanges).SingleOrDefault();
 
         public void UpdateSubCategory(Subcategory subCategory) => Update(subCategory);
     }

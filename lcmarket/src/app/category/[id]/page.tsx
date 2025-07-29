@@ -58,7 +58,7 @@ export default function CategoryDetailPage() {
   const loading = categoryLoading || subcategoriesLoading || productsLoading;
   const products = allProducts.filter((p: Product) => p.categoryId === categoryId);
   const filteredProducts = selectedSub
-    ? products.filter((p) => p.sub_id === selectedSub)
+    ? products.filter((p) => p.subcategoryId === selectedSub)
     : products;
 
   const selectedSubName = selectedSub

@@ -15,6 +15,5 @@ namespace Entities.DTO.CustomerDTO
         string Country,
         string Email,
         string PhoneNumber
-        // ⚠️ Password dahil edilmiyor - güvenlik!
     );
 }

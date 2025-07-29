@@ -8,8 +8,8 @@ namespace Entities.Models
 {
     public class Subcategory
     {
-        public int sub_id { get; set; }
-        public string? sub_name { get; set; } = string.Empty;
+        public int SubcategoryId { get; set; }
+        public string? SubcategoryName { get; set; } = string.Empty;
 
         public int category_id { get; set; }
         public Category? Category { get; set; }

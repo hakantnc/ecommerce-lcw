@@ -6,12 +6,12 @@ public class SubcategoryConfig : IEntityTypeConfiguration<Subcategory>
 {
     public void Configure(EntityTypeBuilder<Subcategory> builder)
     {
-        builder.HasKey(sc => sc.sub_id);
+        builder.HasKey(sc => sc.SubcategoryId);
 
-        builder.Property(sc => sc.sub_id)
+        builder.Property(sc => sc.SubcategoryId)
             .IsRequired();
 
-        builder.Property(sc => sc.sub_name)
+        builder.Property(sc => sc.SubcategoryName)
             .IsRequired()
             .HasMaxLength(100);
 
@@ -22,20 +22,20 @@ public class SubcategoryConfig : IEntityTypeConfiguration<Subcategory>
         builder.HasData(
             new Subcategory
             {
-                sub_id = 1,
-                sub_name = "Smartphones",
+                SubcategoryId = 1,
+                SubcategoryName = "Smartphones",
                 category_id = 1
             },
             new Subcategory
             {
-                sub_id = 2,
-                sub_name = "Laptops",
+                SubcategoryId = 2,
+                SubcategoryName = "Laptops",
                 category_id = 1
             },
             new Subcategory
             {
-                sub_id = 3,
-                sub_name = "Tablets",
+                SubcategoryId = 3,
+                SubcategoryName = "Tablets",
                 category_id = 1
             }
         );

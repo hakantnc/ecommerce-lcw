@@ -92,7 +92,8 @@ const mapProductFromAPI = (apiProduct: any) => ({
   categoryId: apiProduct.category_id || apiProduct.categoryId,
   supplierId: apiProduct.supplier_id || apiProduct.supplierId,
   isActive: apiProduct.IsActive !== undefined ? apiProduct.IsActive : apiProduct.isActive,
-  sub_id: apiProduct.sub_id || apiProduct.subcategoryId
+  subcategoryId: apiProduct.SubcategoryId,
+  subcategoryName: apiProduct.SubcategoryName
 });
 
 const mapProductToAPI = (product: any) => {
@@ -107,7 +108,8 @@ const mapProductToAPI = (product: any) => {
     IsActive: product.isActive !== false,
     category_id: product.categoryId ? parseInt(product.categoryId) : null,
     supplier_id: product.supplierId ? parseInt(product.supplierId) : null,
-    sub_id: product.subcategoryId ? parseInt(product.subcategoryId) : null,
+    SubcategoryId: product.subcategoryId ? parseInt(product.subcategoryId) : null,
+    SubcategoryName: product.subcategoryName || null
   };
   
   // UPDATE işlemi için ID eklenir
@@ -147,6 +149,10 @@ export const productAPI = {
     return await apiRequest(`/product/${id}`, {
       method: 'DELETE'
     });
+  },
+  search: async (query: string) => {
+    const data = await apiRequest(`/product/search?query=${encodeURIComponent(query)}`);
+    return Array.isArray(data) ? data.map(mapProductFromAPI) : [];
   }
 };
 
@@ -199,15 +205,68 @@ export const supplierAPI = {
 
 // Subcategory işlemleri
 export const subcategoryAPI = {
-  // Kategoriye göre subcategoryleri getir
-  getByCategory: async (categoryId: number) => {
-    const data = await apiRequest(`/subcategory/by-category/${categoryId}`);
+  // Tüm alt kategorileri getir
+  getAll: async () => {
+    const data = await apiRequest('/subcategory');
     return Array.isArray(data) ? data.map((s: any) => ({
-      id: s.sub_id,
-      name: s.sub_name,
+      id: s.subcategoryId,
+      name: s.subcategoryName,
       categoryId: s.category_id
     })) : [];
   },
+
+  // ID'ye göre alt kategori getir
+  getById: async (id: number) => {
+    const data = await apiRequest(`/subcategory/${id}`);
+    return data ? {
+      id: data.subcategoryId,
+      name: data.subcategoryName,
+      categoryId: data.category_id
+    } : null;
+  },
+
+  // Kategoriye göre alt kategorileri getir
+  getByCategory: async (categoryId: number) => {
+    const data = await apiRequest(`/subcategory/by-category/${categoryId}`);
+    return Array.isArray(data) ? data.map((s: any) => ({
+      id: s.subcategoryId,
+      name: s.subcategoryName,
+      categoryId: s.category_id
+    })) : [];
+  },
+  
+  // Yeni alt kategori oluştur
+  create: async (subcategory: { name: string, categoryId: number }) => {
+    const data = await apiRequest('/subcategory', {
+      method: 'POST',
+      body: JSON.stringify({
+        subcategoryName: subcategory.name,
+        category_id: subcategory.categoryId
+      })
+    });
+    return data ? {
+      id: data.subcategoryId,
+      name: data.subcategoryName,
+      categoryId: data.category_id
+    } : null;
+  },
+
+  // Alt kategori güncelle
+  update: async (id: number, subcategory: { name: string, categoryId: number }) => {
+    const data = await apiRequest(`/subcategory/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        subcategoryName: subcategory.name,
+        category_id: subcategory.categoryId
+      })
+    });
+    return data;
+  },
+
+  // Alt kategori sil
+  delete: (id: number) => apiRequest(`/subcategory/${id}`, {
+    method: 'DELETE'
+  })
 }; 
 
 const API_URL = 'http://localhost:5267/api';

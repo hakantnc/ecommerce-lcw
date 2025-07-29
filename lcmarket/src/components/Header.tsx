@@ -1,37 +1,24 @@
-// Header Component - E-ticaret sitesi için ana header
-// Sol: Logo, Orta: Arama çubuğu, Sağ: Kullanıcı menüsü
-
 'use client';
-
+import SearchInput from '@/components/SearchInput';
 import Link from 'next/link';
-import { useState } from 'react';
 
 export default function Header() {
-  // Arama metni için state
-  const [searchText, setSearchText] = useState('');
-
-  // Arama fonksiyonu (şimdilik console'a yazdırıyor)
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-  };
-
   return (
     <header className="bg-white shadow-sm border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          
-          {/* Sol Taraf - Logo */}
+          {/* Sol: Logo */}
           <div className="flex-shrink-0">
             <Link href="/" className="block">
-              <h1 className="text-2xl font-black text-blue-600 tracking-tight hover:text-blue-700 transition-colors duration-200">
+              <h1 className="text-2xl font-black text-blue-600 hover:text-blue-700 transition-colors duration-200">
                 LCW MARKET
               </h1>
             </Link>
           </div>
 
-          {/* Orta - Arama Çubuğu */}
+          {/* Orta: Arama Çubuğu */}
           <div className="flex-1 max-w-2xl mx-8">
-            <form onSubmit={handleSearch} className="relative">
+            <form onSubmit={(e) => e.preventDefault()} className="relative">
               <div className="relative">
                 {/* Arama ikonu */}
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -39,31 +26,14 @@ export default function Header() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
                 </div>
-                
-                {/* Arama input'u */}
-                <input
-                  type="text"
-                  placeholder="Binlerce ürün arasında ara..."
-                  value={searchText}
-                  onChange={(e) => setSearchText(e.target.value)}
-                  className="block w-full pl-10 pr-12 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors duration-200"
-                />
-                
-                {/* Arama butonu */}
-                <button
-                  type="submit"
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                >
-                  <span className="bg-blue-600 text-white px-4 py-1 rounded-md text-sm hover:bg-blue-700 transition-colors duration-200">
-                    Ara
-                  </span>
-                </button>
+
+                <SearchInput />
               </div>
             </form>
           </div>
 
-          {/* Sağ Taraf - Kullanıcı Menüsü */}
-          <div className="flex items-center space-x-6">
+           {/* Sağ Taraf - Kullanıcı Menüsü */}
+           <div className="flex items-center space-x-6">
             
             {/* Hesabım İkonu */}
             <Link 
@@ -91,4 +61,4 @@ export default function Header() {
       </div>
     </header>
   );
-} 
+}
