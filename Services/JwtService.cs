@@ -21,12 +21,15 @@ namespace Services
             _config = config;
         }
 
-        public string GenerateToken(string email, string role)
+        public string GenerateToken(string email, string role, string FirstName, string LastName, int Id)
         {
             var claims = new[]
             {
         new Claim(ClaimTypes.Email, email),
-        new Claim(ClaimTypes.Role, role)
+        new Claim(ClaimTypes.Role, role),
+        new Claim(ClaimTypes.GivenName, FirstName),
+        new Claim(ClaimTypes.Surname, LastName),
+        new Claim(ClaimTypes.NameIdentifier, Id.ToString())
     };
 
             var keyString = _config["JwtSettings:Key"] ?? throw new InvalidOperationException("JWT Key is not configured.");

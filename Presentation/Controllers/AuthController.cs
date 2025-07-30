@@ -68,16 +68,15 @@ namespace Presentation.Controllers
             if (customer != null && PasswordHasher.Verify(dto.Password, customer.Password!))
             {
                 
-               var token = _jwtService.GenerateToken(customer.Email!, "Customer");
+               var token = _jwtService.GenerateToken(customer.Email!, "Customer", customer.FirstName, customer.LastName, customer.Id);
                 return Ok(new {token});
             }
 
               var supplier = _manager.SupplierService.GetByEmail(dto.Email);
             if( supplier != null && PasswordHasher.Verify(dto.Password, supplier.supplier_password!))
             {
-   
 
-                var token = _jwtService.GenerateToken(supplier.supplier_email!, "Supplier");
+                var token = _jwtService.GenerateToken(supplier.supplier_email!, "Supplier", supplier.supplier_name, supplier.supplier_name, supplier.supplier_id);
                 return Ok(new {token});
             }
             return StatusCode(401, "Invalid email or password");
