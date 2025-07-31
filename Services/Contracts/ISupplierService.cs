@@ -16,5 +16,7 @@ namespace Services.Contracts
         void UpdateOneSupplier(int supplier_id, SupplierDtoForUpdate supplierDto, bool trackChanges);
         void DeleteOneSupplier(int supplier_id, Supplier supplier);
         IEnumerable<Product> GetProductsBySupplierId(int supplier_id, bool trackChanges);
+        Supplier? GetByRefreshToken(string refreshToken);
+
     }
 }

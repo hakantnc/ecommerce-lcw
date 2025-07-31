@@ -16,6 +16,8 @@ namespace Entities.Models
         public string supplier_address { get; set; } = string.Empty;
         public string supplier_city { get; set; } = string.Empty;
         public string supplier_country { get; set; } = string.Empty;
+        public string? RefreshToken { get; set; }
+        public DateTime RefreshTokenExpiryTime { get; set; }
         public ICollection<Product>? products { get; set; }
     }
 }

@@ -67,5 +67,11 @@ namespace Services
             _manager.SupplierService.UpdateOneSupplier(supplier_id, entity, trackChanges);
             _manager.Save();
         }
+
+        public Supplier? GetByRefreshToken(string refreshToken)
+        {
+            return _manager.SupplierService.GetByRefreshToken(refreshToken);
+        }
+
     }
 }

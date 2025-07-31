@@ -65,5 +65,12 @@ namespace Services
             _manager.CustomerService.UpdateOneCustomer(customer_id, entity, trackChanges);
             _manager.Save();
         }
+        public Customer? GetByRefreshToken(string refreshToken)
+        {
+            return _manager.CustomerService.GetByRefreshToken(refreshToken);
+        }
+
+
     }
-}
+
+    }

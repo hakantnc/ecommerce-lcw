@@ -48,5 +48,9 @@ namespace Repositories.EFCore
         }
         public Customer? GetByEmail(string email)
         => _context.Set<Customer>().FirstOrDefault(c => c.Email == email);
+        public Customer? GetByRefreshToken(string refreshToken)
+        {
+            return _context.Customers.FirstOrDefault(c => c.RefreshToken == refreshToken);
+        }
     }
 }

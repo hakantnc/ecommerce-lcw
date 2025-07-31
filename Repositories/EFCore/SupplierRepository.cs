@@ -63,5 +63,11 @@ namespace Repositories.EFCore
         }
         public Supplier? GetByEmail(string email)
        => _context.Set<Supplier>().FirstOrDefault(s => s.supplier_email == email);
+
+        public Supplier? GetByRefreshToken(string refreshToken)
+        {
+            return _context.Suppliers.FirstOrDefault(s => s.RefreshToken == refreshToken);
+        }
+
     }
 }

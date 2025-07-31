@@ -9,7 +9,6 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const router = useRouter();
-  const { setToken } = useAuthStore();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,25 +20,15 @@ export default function LoginPage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        credentials: 'include', 
+        body: JSON.stringify({ email, password }),  
       });
 
       if (!res.ok) {
         const msg = await res.text();
         throw new Error(msg || 'Giriş başarısız');
       }
-
-      const data = await res.json();
-
-      if (!data.token) throw new Error('Token alınamadı');
-
-      // ✅ Token'ı kaydet
-      localStorage.setItem('token', data.token);
-      setToken(data.token);
-
-      // Anasayfaya yönlendir
-      router.push('/');
-      router.refresh();
+      window.location.href = '/';
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Bir hata oluştu');
     }
@@ -47,13 +36,13 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center relative">
-           <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
-          style={{
-            backgroundImage: "url(/auth-bg/auth-bg.jpg)",
-            filter: "brightness(0.3)",
-          }}
-        />
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
+        style={{
+          backgroundImage: "url(/auth-bg/auth-bg.jpg)",
+          filter: "brightness(0.3)",
+        }}
+      />
       <div className="w-full max-w-md bg-white p-8 rounded-xl shadow-md relative z-10 mx-4">
         <h2 className="text-center text-3xl font-extrabold text-gray-900">
           Giriş Yap

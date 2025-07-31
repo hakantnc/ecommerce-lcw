@@ -16,5 +16,6 @@ namespace Repositories.Contracts
 
         IQueryable<Product> GetProductsBySupplierId(int supplier_id, bool trackChanges);
         Supplier? GetByEmail(string email);
+        Supplier? GetByRefreshToken(string refreshToken);
     }
 }

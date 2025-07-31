@@ -16,5 +16,6 @@ namespace Services.Contracts
         Customer CreateOneCustomer(Customer customer);
         void UpdateOneCustomer(int customer_id, CustomerDtoForUpdate customerDto, bool trackChanges);
         void DeleteOneCustomer(int customer_id, Customer customer);
+        Customer? GetByRefreshToken(string refreshToken);
     }
 }
